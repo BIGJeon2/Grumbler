@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "615326183887",
+    "firebase_url": "https://grumbler-a15d6-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "grumbler-a15d6",
+    "storage_bucket": "grumbler-a15d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615326183887:android:d47268c24bfa18da5562ba",
+        "android_client_info": {
+          "package_name": "com.BigJeon.grumbler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615326183887-beu6cvbmcpedeiou44ejet6lfs9vtm3a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.BigJeon.grumbler",
+            "certificate_hash": "2ce1162046675751d5be41adacf786a2a8993a7f"
+          }
+        },
+        {
+          "client_id": "615326183887-ma3at5va79n4sgc8utt4d5le0nishdam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxoOzzQSeiHOutDrRFCU8fStW1KCY7ORg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615326183887-ma3at5va79n4sgc8utt4d5le0nishdam.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

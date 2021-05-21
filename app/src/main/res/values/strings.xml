@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Grumbler</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Main_App_Name">고소창</string>
+    <string name="App_Explain">고민을 소통하는 창 /bn 고 소 창</string>
+    <string name="Set_Profile">- 프로필 설정 -</string>
+</resources>

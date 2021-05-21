@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Set_Profile_Activity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/Set_Profile"
+        android:textColor="@color/App_Main_Color_Green"
+        android:background="@drawable/border_bottom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/User_Profile_IMG"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@android:drawable/ic_menu_gallery"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="닉네임: "
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/User_Profile_Name"
+        app:layout_constraintEnd_toStartOf="@+id/User_Profile_Name"
+        app:layout_constraintTop_toTopOf="@+id/User_Profile_Name" />
+
+    <EditText
+        android:id="@+id/User_Profile_Name"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:hint="이름입력"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/User_Profile_IMG" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Set_Profile_Complete_BTN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_border_1dp"
+        android:text="시작하기"
+        app:layout_constraintBottom_toBottomOf="@+id/User_Profile_Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/User_Profile_Name" />
+</androidx.constraintlayout.widget.ConstraintLayout>

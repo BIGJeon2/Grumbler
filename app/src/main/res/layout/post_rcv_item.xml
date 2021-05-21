@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/Posted_User_Img"
+        android:background="@drawable/ic_launcher_foreground"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+    </de.hdodenhof.circleimageview.CircleImageView>
+    <TextView
+        android:gravity="center_vertical"
+        android:id="@+id/Posted_User_Name"
+        android:text="유저 이름"
+        android:layout_toRightOf="@+id/Posted_User_Img"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp">
+    </TextView>
+    <TextView
+        android:id="@+id/Posted_Text"
+        android:layout_marginLeft="10dp"
+        android:text="내용들어갈 공간"
+        android:layout_below="@+id/Posted_User_Img"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+    <TextView
+        android:id="@+id/Posted_Date"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="15dp">
+    </TextView>
+</RelativeLayout>

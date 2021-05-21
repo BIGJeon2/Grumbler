@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Main_View_For_App">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Top_Container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/App_Main_Color_Green">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/App_Name"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/My_IMG"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/My_Name"
+            app:layout_constraintTop_toTopOf="parent"></de.hdodenhof.circleimageview.CircleImageView>
+
+        <TextView
+            android:id="@+id/My_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User_Name"
+            android:textSize="15dp"
+            android:layout_marginRight="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/List_Container"
+        android:layout_below="@+id/Top_Container"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/list_All"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="전체보기"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+        </TextView>
+        <TextView
+            android:id="@+id/list_Firend"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="친구글보기"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+        </TextView>
+        <TextView
+            android:id="@+id/list_Mine"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="내가 쓴 글"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+        </TextView>
+        <TextView
+            android:id="@+id/Friends_List"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="친구 목록"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp">
+        </TextView>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/Frame_Layout"
+        android:layout_below="@+id/List_Container"
+        android:layout_above="@+id/BTN_Container"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/BTN_Container"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/Setting_Btn"
+            android:text="설정"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/button_border_1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </androidx.appcompat.widget.AppCompatButton>
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/Post_Start_FloatBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/white"
+        android:padding="0dp"
+        android:src="@android:drawable/ic_menu_edit"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+</RelativeLayout>
