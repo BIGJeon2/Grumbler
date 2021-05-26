@@ -18,13 +18,16 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Set_Profile_Activity : AppCompatActivity() {
 
-    private var User_Img: String? = null
-    private var User_Name: String? = null
-    private var User_Uid: String? = null
-    private var Img_uri: Uri? = null
+    private var My_Img: String? = null
+    private var My_Name: String? = null
+    private var My_Uid: String? = null
+    private var My_Uri: Uri? = null
+    private var My_Favorite: ArrayList<String> = arrayListOf()
+    private var My_Friend: ArrayList<String> = arrayListOf()
 
     private lateinit var Auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
@@ -43,8 +46,8 @@ class Set_Profile_Activity : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
         DataBase = FirebaseFirestore.getInstance()
 
-        User_Uid = Auth.currentUser.uid
-        Toast.makeText(this, "$User_Uid.", Toast.LENGTH_SHORT).show()
+        My_Uid = Auth.currentUser.uid
+        Toast.makeText(this, "$My_Uid.", Toast.LENGTH_SHORT).show()
         loadData()
 
         //갤러리에서 이미지 불러오기
@@ -53,7 +56,7 @@ class Set_Profile_Activity : AppCompatActivity() {
         }
         //유저 프로필 저장후 엑티비티 이동
         binding.SetProfileCompleteBTN.setOnClickListener {
-            if(binding.UserProfileName.text.toString() == null || Img_uri == null){
+            if(binding.UserProfileName.text.toString() == null || My_Uri == null){
                 Toast.makeText(this, "사용하실 이름과 사진을 작성해주세요.", Toast.LENGTH_SHORT).show()
             }else {
                 Add_User()
@@ -75,8 +78,8 @@ class Set_Profile_Activity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Get_Image){
             if(resultCode == RESULT_OK){
-                Img_uri = data?.data
-                Picasso.get().load(Img_uri).into(binding.UserProfileIMG)
+                My_Uri = data?.data
+                Picasso.get().load(My_Uri).into(binding.UserProfileIMG)
             }
         }
     }
@@ -86,12 +89,12 @@ class Set_Profile_Activity : AppCompatActivity() {
     private fun Add_User(){
         var fileName = SimpleDateFormat("yyyMMddhhmmss").format(Date()) + ".png"
         var storage_reference = storage.getReference("Profile_Images/$fileName")
-        var uploadTask = storage_reference.putFile(Img_uri!!)
+        var uploadTask = storage_reference.putFile(My_Uri!!)
         uploadTask.addOnSuccessListener {
             storage_reference.downloadUrl.addOnSuccessListener { uri ->
-                User_Img = uri.toString()
-                User_Name = binding.UserProfileName.text.toString()
-                var My_Profile = User(User_Uid, User_Name, User_Img)
+                My_Img = uri.toString()
+                My_Name = binding.UserProfileName.text.toString()
+                var My_Profile = User(My_Uid, My_Name, My_Img, My_Favorite, My_Friend)
                 Upload_to_FireStore(My_Profile)
                 Toast.makeText(this, "프로필 저장 완료", Toast.LENGTH_SHORT).show()
                 Go_Main_View(My_Profile)
@@ -103,7 +106,7 @@ class Set_Profile_Activity : AppCompatActivity() {
 
     //FireSotre에 Upload
     private fun Upload_to_FireStore(user: User){
-        DataBase.collection("Users").document("$User_Uid")
+        DataBase.collection("Users").document("$My_Uid")
             .set(user)
             .addOnSuccessListener { DocumentReference ->
                 Toast.makeText(this, "db저장완료", Toast.LENGTH_SHORT).show()
@@ -116,13 +119,13 @@ class Set_Profile_Activity : AppCompatActivity() {
     //기존 회원일시 프로필 정보 가져오기
     private fun loadData(){
         DataBase.collection("Users")
-            .whereEqualTo("user_UID", User_Uid)
+            .whereEqualTo("user_UID", My_Uid)
             .get()
             .addOnSuccessListener { result ->
                 for(document in result){
                 val My_Profile  = document.toObject(User::class.java)
-                binding.UserProfileName.setText(My_Profile.User_Name).toString()
-                Picasso.get().load(My_Profile.User_Name).into(binding.UserProfileIMG)
+                binding.UserProfileName.setText(My_Profile.My_Name).toString()
+                Picasso.get().load(My_Profile.My_Name).into(binding.UserProfileIMG)
                 Go_Main_View(My_Profile)
                 finish()
                 }
@@ -132,9 +135,11 @@ class Set_Profile_Activity : AppCompatActivity() {
     //메인뷰로 이동
     private fun Go_Main_View(profile: User){
         val go_App_Main = Intent(this@Set_Profile_Activity, Main_View_For_App::class.java)
-        go_App_Main.putExtra("Name", profile.User_Name)
-        go_App_Main.putExtra("Uid", profile.User_UID)
-        go_App_Main.putExtra("Img", profile.User_Img)
+        go_App_Main.putExtra("Name", profile.My_Name)
+        go_App_Main.putExtra("Uid", profile.My_UID)
+        go_App_Main.putExtra("Img", profile.My_Img)
+        go_App_Main.putExtra("Favorites", profile.My_Favorite)
+        go_App_Main.putExtra("Friends", profile.My_Friend)
         startActivity(go_App_Main)
     }
 }

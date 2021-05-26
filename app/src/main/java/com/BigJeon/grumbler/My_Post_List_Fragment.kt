@@ -61,7 +61,7 @@ class My_Post_List_Fragment(val My_Uid: String) : Fragment(R.layout.fragment_my_
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val getting_post = document.toObject(Post_Item::class.java)
-                    if(getting_post.My_Profile.User_UID == My_Uid) {
+                    if(getting_post.My_Profile.My_UID == My_Uid) {
                         Posts.add(0, getting_post)
                         Adapter.notifyDataSetChanged()
                         println(getting_post)

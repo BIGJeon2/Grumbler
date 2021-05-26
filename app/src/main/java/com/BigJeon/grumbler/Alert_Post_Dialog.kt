@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
@@ -34,16 +35,21 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
     private lateinit var Add_Text_Container: RelativeLayout
     private lateinit var Get_Content: EditText
     private lateinit var Text_SeekBar: SeekBar
-    private lateinit var Text_Color: CircleImageView
+    private lateinit var Text_Color_CIV: CircleImageView
     private lateinit var Text_Add_Complete_Btn: Button
     private lateinit var Set_Add_Text_Btn: Button
-    private var Text_Size: Float = 15f
+    private var Text_Size: Float = 50f
+    private var Text_Color: Int = R.color.black
+    private var Text_Back_Color: Int = android.R.color.transparent
+    private var Text_View1: Custom_TextView = Custom_TextView(null, null, Text_Color, Text_Size, Text_Back_Color, null)
+    private var Text_View2: Custom_TextView = Custom_TextView(null, null, Text_Color, Text_Size, Text_Back_Color, null)
+    private var Text_View3: Custom_TextView = Custom_TextView(null, null, Text_Color, Text_Size, Text_Back_Color, null)
     private var Text_Count = 0
 
     private lateinit var Effect_Imv: ImageView
     private lateinit var Set_Effect_Btn: Button
     private lateinit var Effect_Rcv: RecyclerView
-    private var Effect: Int? = null
+    private var Effect: Int = R.drawable.edge_round_white
 
     private lateinit var Set_Open_Grade: Button
     private lateinit var Grade_Value: String
@@ -71,13 +77,13 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
 
         //프로필 정보 불러와 Set해줌  - 프로필 정보 -
         Name = post_dialog.findViewById(R.id.Post_My_Name)
-        Name.setText(profile.User_Name).toString()
+        Name.setText(profile.My_UID).toString()
         Img = post_dialog.findViewById(R.id.Post_My_IMG)
-        Picasso.get().load(profile.User_Img).into(Img)
-        Effect_Imv = post_dialog.findViewById(R.id.Effect_IMV)
+        Picasso.get().load(profile.My_Img).into(Img)
 
         //뷰 참조 모음
         Set_Effect_Btn = post_dialog.findViewById(R.id.Post_Set_Effect_Btn)
+        Effect_Imv = post_dialog.findViewById(R.id.Effect_IMV)
         Effect_Rcv = post_dialog.findViewById(R.id.Effect_Rcv)
         Get_Content = post_dialog.findViewById(R.id.Add_Text_EditText)
         Add_Text_Container = post_dialog.findViewById(R.id.Add_Text_Container)
@@ -86,7 +92,7 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
         Set_Open_Grade = post_dialog.findViewById(R.id.Post_Set_OpenGrade_Btn)
         Finish_Post_Btn = post_dialog.findViewById(R.id.Post_Complete_Btn)
         Text_SeekBar = post_dialog.findViewById(R.id.Add_Text_Seek_Bar)
-        Text_Color = post_dialog.findViewById(R.id.Add_Text_Color_Set_CIV)
+        Text_Color_CIV = post_dialog.findViewById(R.id.Add_Text_Color_Set_CIV)
         Text_Add_Complete_Btn = post_dialog.findViewById(R.id.Add_Text_Complete_Btn)
         Post_Text_Container = post_dialog.findViewById(R.id.Post_Text_Container)
 
@@ -111,7 +117,11 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
             }
         })
         Text_Add_Complete_Btn.setOnClickListener {
-            Add_TextView()
+            if(Get_Content.text.toString() != null){
+                Add_TextView()
+            }else{
+             Toast.makeText(post_dialog.context, "글을 작성해 주세요", Toast.LENGTH_SHORT).show()
+            }
         }
 
         //이펙트 설정 버튼 클릭시 이펙트RCV 보여주고, 클릭시 해당 이펙트의 Uri 가져와 글라이드로 배경에 삽입 - 이펙트 설정 -
@@ -137,7 +147,7 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
 
         //글 작성 완료시 저장 - 게시 -
         Finish_Post_Btn.setOnClickListener {
-            if(Get_Content.text.toString().length > 0){
+            if(Text_Count > 0){
                 Upload_Post()
             }else{
                 Toast.makeText(post_dialog.context, "내용을 입력해 주세요", Toast.LENGTH_SHORT).show()
@@ -159,8 +169,8 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
     //글 게시하기
     private fun Upload_Post(){
         val Posting_time = SimpleDateFormat("yyyMMddhhmmss").format(Date())
-        var Poster_Name = Posting_time + ".${profile.User_UID}"
-        var Post = Post_Item(profile, Get_Content.text.toString(), Effect, null, Grade_Value, Posting_time.toString(), null, null, null)
+        var Poster_Name = Posting_time + ".${profile.My_UID}"
+        var Post = Post_Item(profile, Effect, Grade_Value, Posting_time.toString(), Text_View1, Text_View2, Text_View3)
         DataBase.collection("Posts").document("$Poster_Name")
             .set(Post)
             .addOnSuccessListener { DocumentReference ->
@@ -175,13 +185,40 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
     //텍스트뷰 동적 만들기(색, 폰트 크기, 생성 후 뷰 위치 이동 가능, 최대 갯수 3개)
     private fun Add_TextView(){
         if(Text_Count < 3) {
+            var moveX = 0f
+            var moveY = 0f
             val textview = TextView(post_dialog.context)
             textview.text = Get_Content.text.toString()
             textview.setTextSize(Dimension.DP, Text_Size)
-            textview.setOnClickListener {
-                //Delete_View()
+            textview.setOnTouchListener{ v, event ->
+                when(event.action){
+                    MotionEvent.ACTION_DOWN -> {
+                        moveX = v.x - event.rawX
+                        moveY = v.y - event.rawY
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        v.animate()
+                            .x(event.rawX + moveX)
+                            .y(event.rawY + moveY)
+                            .setDuration(0)
+                            .start()
+                    }
+                }
+                true
             }
+//            textview.setOnClickListener {
+//                textview.visibility = View.GONE
+//                Text_Count--
+//                Toast.makeText(post_dialog.context, "텍스트가 삭제 되었습니다. ${Text_Count} / 3", Toast.LENGTH_SHORT).show()
+//            }
             Post_Text_Container.addView(textview)
+            if(Text_View1.Content == null){
+                Text_View1 = Custom_TextView(moveX, moveY, Text_Color, Text_Size, Text_Back_Color, textview.text.toString())
+            }else if(Text_View2.Content == null){
+                Text_View2 = Custom_TextView(moveX, moveY, Text_Color, Text_Size, Text_Back_Color, textview.text.toString())
+            }else if(Text_View3.Content == null){
+                Text_View3 = Custom_TextView(moveX, moveY, Text_Color, Text_Size, Text_Back_Color, textview.text.toString())
+            }
             Toast.makeText(post_dialog.context, "${Text_Count} / 3", Toast.LENGTH_SHORT).show()
             Text_Count++
             Get_Content.setText("")

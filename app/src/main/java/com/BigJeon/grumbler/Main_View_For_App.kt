@@ -60,9 +60,9 @@ class Main_View_For_App : AppCompatActivity() {
     //현재 사용자 프로필 불러오기
     private fun Load_Profile(){
         if(intent.hasExtra("Name")) {
-            My_Profile = User(intent.getStringExtra("Uid")!!, intent.getStringExtra("Name"), intent.getStringExtra("Img"))
-            binding.MyName.setText(My_Profile.User_Name).toString()
-            Picasso.get().load(My_Profile.User_Img).into(binding.MyIMG)
+            My_Profile = User(intent.getStringExtra("Uid")!!, intent.getStringExtra("Name"), intent.getStringExtra("Img"), intent.getStringArrayListExtra("Favorites"), intent.getStringArrayListExtra("Friends"))
+            binding.MyName.setText(My_Profile.My_Name).toString()
+            Picasso.get().load(My_Profile.My_Img).into(binding.MyIMG)
         }
     }
     //글작성 버튼 클릭시 글 작성 Dialog띄워주기
@@ -87,7 +87,7 @@ class Main_View_For_App : AppCompatActivity() {
     }
     private fun My_Post_Fragment(){
         val fragmentTransaction = fragmentManager.beginTransaction()
-        val fragment = My_Post_List_Fragment(My_Uid = My_Profile.User_UID.toString())
+        val fragment = My_Post_List_Fragment(My_Uid = My_Profile.My_UID.toString())
         fragmentTransaction.replace(R.id.Frame_Layout, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()

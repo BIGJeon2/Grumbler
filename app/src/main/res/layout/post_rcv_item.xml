@@ -1,39 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/Posted_User_Img"
-        android:background="@drawable/ic_launcher_foreground"
-        android:layout_width="50dp"
-        android:layout_height="50dp">
-    </de.hdodenhof.circleimageview.CircleImageView>
-    <TextView
-        android:gravity="center_vertical"
-        android:id="@+id/Posted_User_Name"
-        android:text="유저 이름"
-        android:layout_toRightOf="@+id/Posted_User_Img"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp">
-    </TextView>
-    <TextView
-        android:id="@+id/Posted_Text"
-        android:layout_marginLeft="10dp"
-        android:text="내용들어갈 공간"
-        android:layout_below="@+id/Posted_User_Img"
-        android:gravity="center_vertical"
+    android:layout_height="300dp"
+    android:background="@android:color/transparent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <FrameLayout
+        android:background="@drawable/edge_round_white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </TextView>
-    <TextView
-        android:id="@+id/Posted_Date"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="15dp">
-    </TextView>
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/Effect_IMV"
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ImageView>
+        <RelativeLayout
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/Post_Top_Container"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/Post_My_IMG"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_launcher_foreground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+                </de.hdodenhof.circleimageview.CircleImageView>
+                <TextView
+                    android:id="@+id/Post_My_Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User_Name"
+                    android:textSize="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/Post_My_IMG"
+                    app:layout_constraintTop_toTopOf="parent">
+                </TextView>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/Post_Favorite_Btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@android:drawable/btn_star_big_off"
+                    android:onClick="Favorite_Btn_OnClick"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <RelativeLayout
+                android:id="@+id/Post_Text_Container"
+                android:layout_below="@+id/Post_Top_Container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/Post_Date"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="yyyyhhmmss"
+                    android:textSize="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </RelativeLayout>
+        </RelativeLayout>
+    </FrameLayout>
 </RelativeLayout>
