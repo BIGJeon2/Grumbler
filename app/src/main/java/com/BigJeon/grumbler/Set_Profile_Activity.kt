@@ -138,8 +138,8 @@ class Set_Profile_Activity : AppCompatActivity() {
         go_App_Main.putExtra("Name", profile.My_Name)
         go_App_Main.putExtra("Uid", profile.My_UID)
         go_App_Main.putExtra("Img", profile.My_Img)
-        go_App_Main.putExtra("Favorites", profile.My_Favorite)
-        go_App_Main.putExtra("Friends", profile.My_Friend)
+        go_App_Main.putExtra("Favorites", profile.My_Favorites)
+        go_App_Main.putExtra("Friends", profile.My_Friends)
         startActivity(go_App_Main)
     }
 }

@@ -59,6 +59,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
+                    android:id="@+id/Post_Content_TextView"
+                    android:gravity="center"
+                    android:text="확인용입니다."
+                    android:textColorHighlight="@color/App_Main_Color_Green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </TextView>
+                <TextView
                     android:id="@+id/Post_Date"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"

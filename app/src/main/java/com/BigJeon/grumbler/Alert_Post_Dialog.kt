@@ -41,9 +41,7 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
     private var Text_Size: Float = 50f
     private var Text_Color: Int = R.color.black
     private var Text_Back_Color: Int = android.R.color.transparent
-    private var Text_View1: Custom_TextView = Custom_TextView(null, null, Text_Color, Text_Size, Text_Back_Color, null)
-    private var Text_View2: Custom_TextView = Custom_TextView(null, null, Text_Color, Text_Size, Text_Back_Color, null)
-    private var Text_View3: Custom_TextView = Custom_TextView(null, null, Text_Color, Text_Size, Text_Back_Color, null)
+    private var Text_Font: Int? = null
     private var Text_Count = 0
 
     private lateinit var Effect_Imv: ImageView
@@ -85,7 +83,7 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
         Set_Effect_Btn = post_dialog.findViewById(R.id.Post_Set_Effect_Btn)
         Effect_Imv = post_dialog.findViewById(R.id.Effect_IMV)
         Effect_Rcv = post_dialog.findViewById(R.id.Effect_Rcv)
-        Get_Content = post_dialog.findViewById(R.id.Add_Text_EditText)
+        Get_Content = post_dialog.findViewById(R.id.Post_Text_EditText)
         Add_Text_Container = post_dialog.findViewById(R.id.Add_Text_Container)
         Set_Add_Text_Btn = post_dialog.findViewById(R.id.Post_Set_Add_Text_Btn)
         Set_Open_Grade = post_dialog.findViewById(R.id.Post_Set_OpenGrade_Btn)
@@ -93,10 +91,10 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
         Finish_Post_Btn = post_dialog.findViewById(R.id.Post_Complete_Btn)
         Text_SeekBar = post_dialog.findViewById(R.id.Add_Text_Seek_Bar)
         Text_Color_CIV = post_dialog.findViewById(R.id.Add_Text_Color_Set_CIV)
-        Text_Add_Complete_Btn = post_dialog.findViewById(R.id.Add_Text_Complete_Btn)
+        Text_Add_Complete_Btn = post_dialog.findViewById(R.id.Add_Text_Font)
         Post_Text_Container = post_dialog.findViewById(R.id.Post_Text_Container)
 
-        //작성 글에 들어갈 내용 -> 텍스트뷰 3개까지만 제공, 각 텍스트 뷰의 위치(x,y), 색, 크기값 Custom_TextView 데이터 클래스로 저장 - 글 작성 -
+        //텍스트 설정 창 보여주기
         Set_Add_Text_Btn.setOnClickListener {
                 Change_Set_View("TEXT")
         }
@@ -117,11 +115,8 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
             }
         })
         Text_Add_Complete_Btn.setOnClickListener {
-            if(Get_Content.text.toString() != null){
-                Add_TextView()
-            }else{
-             Toast.makeText(post_dialog.context, "글을 작성해 주세요", Toast.LENGTH_SHORT).show()
-            }
+            //폰트 설정기능구현
+            Set_Text_Font()
         }
 
         //이펙트 설정 버튼 클릭시 이펙트RCV 보여주고, 클릭시 해당 이펙트의 Uri 가져와 글라이드로 배경에 삽입 - 이펙트 설정 -
@@ -170,7 +165,7 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
     private fun Upload_Post(){
         val Posting_time = SimpleDateFormat("yyyMMddhhmmss").format(Date())
         var Poster_Name = Posting_time + ".${profile.My_UID}"
-        var Post = Post_Item(profile, Effect, Grade_Value, Posting_time.toString(), Text_View1, Text_View2, Text_View3)
+        var Post = Post_Item(profile, Effect, Grade_Value, Posting_time.toString(), Custom_TextView(Text_Color, Text_Size, Text_Back_Color, Get_Content.text.toString(),Text_Font))
         DataBase.collection("Posts").document("$Poster_Name")
             .set(Post)
             .addOnSuccessListener { DocumentReference ->
@@ -181,53 +176,12 @@ class Alert_Post_Dialog(context: Context, My_Profile: User) {
             }
         post_dialog.dismiss()
     }
-
-    //텍스트뷰 동적 만들기(색, 폰트 크기, 생성 후 뷰 위치 이동 가능, 최대 갯수 3개)
-    private fun Add_TextView(){
-        if(Text_Count < 3) {
-            var moveX = 0f
-            var moveY = 0f
-            val textview = TextView(post_dialog.context)
-            textview.text = Get_Content.text.toString()
-            textview.setTextSize(Dimension.DP, Text_Size)
-            textview.setOnTouchListener{ v, event ->
-                when(event.action){
-                    MotionEvent.ACTION_DOWN -> {
-                        moveX = v.x - event.rawX
-                        moveY = v.y - event.rawY
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        v.animate()
-                            .x(event.rawX + moveX)
-                            .y(event.rawY + moveY)
-                            .setDuration(0)
-                            .start()
-                    }
-                }
-                true
-            }
-//            textview.setOnClickListener {
-//                textview.visibility = View.GONE
-//                Text_Count--
-//                Toast.makeText(post_dialog.context, "텍스트가 삭제 되었습니다. ${Text_Count} / 3", Toast.LENGTH_SHORT).show()
-//            }
-            Post_Text_Container.addView(textview)
-            if(Text_View1.Content == null){
-                Text_View1 = Custom_TextView(moveX, moveY, Text_Color, Text_Size, Text_Back_Color, textview.text.toString())
-            }else if(Text_View2.Content == null){
-                Text_View2 = Custom_TextView(moveX, moveY, Text_Color, Text_Size, Text_Back_Color, textview.text.toString())
-            }else if(Text_View3.Content == null){
-                Text_View3 = Custom_TextView(moveX, moveY, Text_Color, Text_Size, Text_Back_Color, textview.text.toString())
-            }
-            Toast.makeText(post_dialog.context, "${Text_Count} / 3", Toast.LENGTH_SHORT).show()
-            Text_Count++
-            Get_Content.setText("")
-        }else{
-            Toast.makeText(post_dialog.context, "최대 3개까지 추가 가능합니다.", Toast.LENGTH_SHORT).show()
-        }
-    }
     //텍스트 뷰에 들어갈 텍스트 색 설정해주기 , 배경색 지정 기능 포함
     private fun Set_Text_Color(){
+
+    }
+    //텍스트 폰트 설정 다이어로그 띄우기
+    private fun Set_Text_Font (){
 
     }
     //버튼 클릭시 설정 컨테이너 전환

@@ -1,5 +1,5 @@
 package com.BigJeon.grumbler
 
-data class Custom_TextView (val x: Float?, val y: Float?, val Color: Int?, val Size: Float, val Text_Bacground_Color: Int?, val Content: String?) {
-    constructor(): this(null, null, null, 50f, null, null)
+data class Custom_TextView (val Color: Int, val Size: Float, val Bacground_Color: Int, val Content: String, val Font: Int?) {
+    constructor(): this( R.color.black, 50f, android.R.color.transparent, "", null)
 }

@@ -26,27 +26,23 @@ class Post_Rcv_Adapter(val context: Context, var Posts: MutableList<Post_Item>, 
         val Post_Effect: ImageView = itemView.findViewById(R.id.Effect_IMV)
         val Post_Favorite_Btn: CircleImageView = itemView.findViewById(R.id.Post_Favorite_Btn)
         val Post_Date: TextView = itemView.findViewById(R.id.Post_Date)
-        val Post_TextView_Container: RelativeLayout = itemView.findViewById(R.id.Post_Text_Container)
+        val Post_Content: TextView = itemView.findViewById(R.id.Post_Content_TextView)
         fun bind(post: Post_Item){
 
             val Posted_User_UID: String = post.My_Profile.My_UID.toString()
             val Posted_User_Effect: Int? = post.Effect
-            if(post.Text_1!!.Content != null){
-                val TextView1 = TextView(context)
-                TextView1.text = post.Text_1!!.Content.toString()
-                TextView1.setTextSize(Dimension.DP, post.Text_1!!.Size)
-                //TextView설정 해줘야함____________________________
-                Post_TextView_Container.addView(TextView1)
-
-            }
             val Posted_Grade: String? = post.Grade
 
 
             Post_User_Name.setText(post.My_Profile.My_Name).toString()
             Picasso.get().load(post.My_Profile.My_Img).into(Post_User_Img)
-            Post_Date.setText(post.Posting_Date).toString()
+            Post_Date.setText(post.Date).toString()
             Glide.with(context).load(post.Effect).into(Post_Effect)
-
+            Post_Content.setText(post.Content.Content.toString())
+            Post_Content.setTextSize(post.Content.Size)
+            Post_Content.setTextColor(post.Content.Color)
+            //Post_Content.fotFeatureSettings 폰트 설정
+            //텍스트 뒤 배경색 설정해줘야함
             itemView.setOnClickListener {
                 PostItemClick(post)
             }
